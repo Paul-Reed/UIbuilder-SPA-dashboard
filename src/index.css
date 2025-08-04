@@ -1,0 +1,228 @@
+/* Load defaults from `<userDir>/node_modules/node-red-contrib-uibuilder/front-end/uib-brand.min.css`
+ * This is optional but reasonably complete and allows for light/dark mode switching.
+ */
+@import url("../uibuilder/uib-brand.min.css");
+
+/* Simple horizontal navigation main menu (in the header) */
+.nav-main {
+    background-color: var(--surface3);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--text3);
+}
+
+.nav-main ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+/* Add space between menu items */
+.nav-main li {
+    margin-right: 1rem;
+}
+
+/* Remove margin on the last item */
+.nav-main li:last-child {
+    margin-right: 0;
+}
+
+.nav-main a {
+    text-decoration: none;
+    padding: var(--border-pad);
+    display: block;
+}
+
+/* Highlight on hover */
+.nav-main a:hover {
+    background-color: var(--surface5);
+    /* Optional: Add rounded corners */
+    border-radius: var(--border-radius);
+}
+
+/* end of Navigation bar */
+
+/* Charger CSS */
+/* Standardize height */
+:root {
+    --control-height: 3em;
+}
+
+body>header {
+    padding-left: 0;
+    max-width: none;
+    margin: 0;
+}
+
+/* Status button styling */
+.status-button {
+    display: flex;
+    align-items: center;
+    background-color: var(--surface4);
+    border: 1px solid var(--text3);
+    border-radius: var(--border-radius);
+    padding: 6px 10px;
+    margin-right: 0.3em;
+    font-family: var(--font-family);
+    color: inherit;
+    height: var(--control-height);
+    width: fit-content;
+    cursor: pointer;
+    transition: box-shadow 0.4s, transform 0.2s;
+}
+
+.status-button:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.indicator {
+    width: 0.5em;
+    height: 2em;
+    margin-right: 0.5em;
+    border-radius: 0.5em;
+    background-color: green;
+    transition: background-color 0.3s;
+}
+
+/* Text box layout */
+body>main {
+    padding: var(--spacing-xs);
+}
+
+.wrap-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2em;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+/* Dropdown styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    font-family: var(--font-family);
+}
+
+.dropbtn {
+    background-color: var(--surface4);
+    color: var(--text-color, inherit);
+    padding: 10px 16px;
+    font-size: var(--font-size-base, 1rem);
+    border: 1px solid var(--text3);
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    height: var(--control-height);
+    width: 10.5em;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.dropbtn:hover {
+    background-color: var(--surface5, #ddd);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--surface4);
+    min-width: 10.5em;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: var(--radius-s, 0.3em);
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    color: var(--text-color, inherit);
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--surface5, #ddd);
+}
+
+.dropdown.show .dropdown-content {
+    display: block;
+}
+
+/* charger Status text*/
+.status-text {
+    color: var(--text-color, inherit);
+    font-size: var(--font-size-base);
+    font-family: var(--font-family);
+    margin: 0.3em 0;
+    line-height: 1.2em;
+}
+
+.status-block {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* start of justgage gauges */
+.gauge {
+    width: 325px;
+    height: 180px;
+    display: inline-block;
+}
+
+.gauge-fit svg {
+    margin: 0;
+    /* Remove margin around gauge */
+}
+
+/* Start of energy data boxes */
+.wrap-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2em;
+    /* your desired spacing between boxes */
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+    /* Style each data box */
+.wrap-row article {
+    flex: 1 0 120px;
+    /* responsive with a min width */
+    max-width: 160px;
+    /* prevent growing too wide */
+    padding: var(--spacing-xs);
+    margin: 0;
+    /* gaps are now controlled via flex gap */
+    background-color: var(--surface4);
+    color: var(--text-color);
+    /* ensures good contrast */
+    border: 1px solid var(--border-color, #999);
+    /* fallback if var isn't defined */
+    border-radius: var(--radius-s, 0.5em);
+    box-shadow: var(--shadow-sm);
+    /* gives "card" feel */
+    text-align: center;
+    font-size: var(--font-size-base);
+}
+/* end of energy data boxes */
+
+/* Start of Plotly */
+#plotly-chart {
+    /* HAVE to set at least width and height for Plotly to render */
+    width: 100%;
+    height: 45vh;
+    margin-top: 1em;
+}
+
+/* Overrides for UIUILDER's default styles */
+.js-plotly-plot .plotly .main-svg {
+    margin: 1em 0 0 0;
+    background-color: unset;
+}
+
+.js-plotly-plot .plotly .modebar-btn svg {
+    background-color: unset;
+    margin: unset;
+}

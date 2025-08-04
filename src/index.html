@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Home Panel</title>
+      <link type="text/css" rel="stylesheet" href="./index.css" media="all" />
+      <!-- Plotly must be above uibuilder entries! -->
+      <script defer src="../uibuilder/vendor/plotly.js-basic-dist-min/plotly-basic.min.js" charset="utf-8"></script>
+      <script defer src="../uibuilder/vendor/justgage/raphael.min.js"></script>
+      <script defer src="../uibuilder/vendor/justgage/dist/justgage.min.js"></script>
+      <script defer src="../uibuilder/uibuilder.iife.min.js"></script>
+      <script defer src="../uibuilder/utils/uibrouter.iife.min.js"></script>
+      <script defer src="./index.js"></script>
+   </head>
+   <body>
+      <header>
+         <nav class="nav-main">
+            <ul>
+               <li>
+                  <a href="#energy">Home Energy</a>
+               </li>
+               <li>
+                  <a href="#charger">EV Charger</a>
+               </li>
+               <li>
+                  <a href="#server">Server</a>
+               </li>
+            </ul>
+         </nav>
+      </header>
+      <main id="view-container">
+         <!-- SPA view content will be loaded here -->
+      </main>
+   </body>
+</html>

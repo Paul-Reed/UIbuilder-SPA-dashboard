@@ -1,0 +1,30 @@
+<section>
+    <h1>EV Charger</h1>
+    <main>
+        <!-- Buttons & dropdown -->
+        <section class="wrap-row">
+            <div class="dropdown">
+                <button onclick="toggleDropdown()" class="dropbtn" id="dropdown-btn">Select charging rate</button>
+                <div id="dropdown-content" class="dropdown-content">
+                    <a href="#" data-value="6.75">1.5kW (6A)</a>
+                    <a href="#" data-value="13.5">3kW (12A)</a>
+                    <a href="#" data-value="19.9">4.5kW (18A)</a>
+                    <a href="#" data-value="26.7">6kW (24A)</a>
+                    <a href="#" data-value="32">7.4kW (32A)</a>
+                    <a href="#" data-value="Auto">Auto</a>
+                </div>
+            </div>
+            <button id="start-charge-btn" class="status-button">
+          <div class="indicator" id="start-indicator"></div>
+          <span>Start Charge</span>
+        </button>
+        </section>
+        <!-- Information text -->
+        <section class="status-block">
+            <p class="status-text">Charger Status: <span id="chargerstate"></span>
+            </p>
+            <p class="status-text">Grid status: <span id="gridpwr"></span>
+            </p>
+        </section>
+    </main>
+</section>
