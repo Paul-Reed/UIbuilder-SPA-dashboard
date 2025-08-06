@@ -1,12 +1,13 @@
-# uibuilder Template: Blank (Default)
 
-> NOTE: You can replace the contents of this README with text that describes your UI.
 
-This is about the simplest template you can get for uibuilder. Is is also (as of uibuilder v5+), the default template.
+# Restoring this template into UIbuilder
 
-It does not use any frameworks and has no other dependencies. It demonstrates that you can use uibuilder purely with HTML/JavaScript or even just HTML and still easily build a simple, dynamic, data-driven user interface with the help of Node-RED.
+* Drop a new 'UIbuilder' node into the editor, and name it's url as 'home' or whatever name you wish, and deply.
+* From the node config, in 'Template Settings' select 'Load an external template using Degit' from the dropdown, and enter the got url. In this case use `Paul-Reed/UIbuilder-SPA-dashboard` and deploy.
+* UIbuilder will then over-write the contents of the 'new' UIbuilder node with the git template.
 
-All it does is load the uibuilder client library and connect to Node-RED.
+> **Note**: if it's also necessary to import the UIbuilder flow from a backup, do that first, **then** restore the template. 
+
 
 ## UI
 
