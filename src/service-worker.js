@@ -8,6 +8,7 @@ const FILES_TO_CACHE = [
   './manifest.webmanifest',
   '../uibuilder/uibuilder.iife.min.js',
   '../uibuilder/utils/uibrouter.iife.min.js',
+  '../uibuilder/uib-brand.min.css',
   '../uibuilder/vendor/justgage/raphael.min.js',
   '../uibuilder/vendor/justgage/dist/justgage.min.js',
   '../uibuilder/vendor/plotly.js-basic-dist-min/plotly-basic.min.js',

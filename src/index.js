@@ -88,6 +88,12 @@ function handleUibMsg(msg) {
             updateMemoryUsageUI(payload);
             break;
 
+        case "energyboxes": // To stop unecessary consol msg's
+            break;
+
+        case "chargingState": // To stop unecessary consol msg's
+            break;
+
 //        case "energy/textboxes":
 //            updateEnergyUI(payload);
 //            break;
