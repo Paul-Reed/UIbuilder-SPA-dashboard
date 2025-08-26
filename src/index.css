@@ -165,6 +165,7 @@ body>main {
     margin-bottom: 0.5em;
 }
 
+
 /* start of justgage gauges */
 .gauge {
     width: 325px;
@@ -207,6 +208,7 @@ body>main {
     text-align: center;
     font-size: var(--font-size-base);
 }
+
 /* end of energy data boxes */
 
 /* Start of Plotly */
@@ -227,3 +229,9 @@ body>main {
     background-color: unset;
     margin: unset;
 }
+
+/* Start of Common featues */
+.datavalue {
+    font-weight: 700;
+}
+/* End of Common featues */

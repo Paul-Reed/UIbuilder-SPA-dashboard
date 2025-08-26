@@ -72,6 +72,39 @@ function handleUibMsg(msg) {
     console.log("[uibuilder msg]", msg);
 
     switch (topic) {
+        // Energy boxes
+//        case 'gridpower':
+//            document.getElementById('gridData').textContent = msg.payload
+//            break
+
+        case 'gridpower':
+            ['gridData', 'gridData2'].forEach(id => {
+                const el = document.getElementById(id)
+                if (el) el.textContent = msg.payload
+            })
+            break    
+
+        case 'solar':
+            document.getElementById('solarData').textContent = msg.payload
+            break
+
+        case 'usage':
+            document.getElementById('usageData').textContent = msg.payload
+            break
+
+        case 'diverted':
+            document.getElementById('divertedData').textContent = msg.payload
+            break
+
+        case 'diverterTemp':
+            document.getElementById('divTempData').textContent = msg.payload
+            break
+
+        case 'voltage':
+            document.getElementById('voltageData').textContent = msg.payload
+            break
+
+        // EV charger
         case "chargeButton":
             updateChargeButtonUI(payload);
             break;
@@ -93,13 +126,6 @@ function handleUibMsg(msg) {
 
         case "chargingState": // To stop unecessary consol msg's
             break;
-
-//        case "energy/textboxes":
-//            updateEnergyUI(payload);
-//            break;
-        // Future routes:
-        // case 'energyData': updateEnergyUI(payload); break
-        // case 'serverStatus': updateServerUI(payload); break
 
         default:
             console.warn(`Unhandled topic: ${topic}`, msg);
@@ -184,8 +210,9 @@ function updateChargingRateUI(value) { // *** Charger rate dropdown ***
 // ---------- End of Charger page ---------- //
 
 // ---------- Start of Server page ---------- //
+
 // Track gauges so we only create them once
-let cpuGauge = null
+let cpuGauge    = null
 let memoryUsage = null
 
 // ------------ Start CPU usage -------------//
