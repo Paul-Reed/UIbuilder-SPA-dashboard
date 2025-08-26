@@ -377,6 +377,4 @@ function prepEnergyEvents() {
             }
         }
     });
-//});
 }
-
