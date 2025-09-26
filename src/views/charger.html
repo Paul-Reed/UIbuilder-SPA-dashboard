@@ -2,7 +2,7 @@
     <h1>EV Charger</h1>
     <main>
         <!-- Buttons & dropdown -->
-        <section class="wrap-row">
+        <section class="wrap-row control-block">
             <div class="dropdown">
                 <button onclick="toggleDropdown()" class="dropbtn" id="dropdown-btn">Select charging rate</button>
                 <div id="dropdown-content" class="dropdown-content">
@@ -15,18 +15,32 @@
                 </div>
             </div>
             <button id="start-charge-btn" class="status-button" onClick="startCharge()">
-          <div class="indicator" id="start-indicator"></div>
-          <span>Start Charge</span>
-        </button>
+                <div class="indicator" id="start-indicator"></div>
+                <span>Start Charge</span>
+            </button>
         </section>
-        <!-- Information text -->
-        <section class="status-block">
-            <p class="status-text">Charger Status: <span id="chargerstate"></span>
-            </p>
-            <p class="status-text">Grid status: <span id="gridData2" class="datavalue"></span>
-            </p>
 
+        <!-- Information text -->
+        <section class="status-block control-block">
+            <p class="status-text">Charger Status: <span id="chargerstate"></span></p>
+            <p class="status-text">Grid status: <span id="gridData2" class="datavalue"></span></p>
         </section>
+
+        <!-- Schedule -->
+        <div class="charger-schedule control-block">
+            <h3>Charger Schedule</h3>
+            <div class="time-row">
+                <label for="start-hour">
+                    Start Hour
+                    <select id="start-hour" aria-label="Start hour"></select>
+                </label>
+                <label for="end-hour">
+                    End Hour
+                    <select id="end-hour" aria-label="End hour"></select>
+                </label>
+            </div>
+            <button id="set-schedule-btn">Set Schedule</button>
+            <button id="cancel-schedule-btn" class="danger">Cancel Schedule</button>
+        </div>
     </main>
 </section>
-

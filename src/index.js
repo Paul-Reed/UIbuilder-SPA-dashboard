@@ -1,4 +1,4 @@
-// ---------- Setup: PWA ---------- //
+// ---------- Setup: PWA ----------
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./service-worker.js')
@@ -8,217 +8,318 @@ if ('serviceWorker' in navigator) {
 }
 // ---------- End of PWA ---------- //
 
-// ---------- Setup: Menu ---------- //
+// ---------- Setup: Menu ----------
 const routerConfig = {
     defaultRoute: "energy",
     hide: true,
-    routes: [{
-        id: "energy",
-        src: "./views/energy.html",
-        type: "url",
-        title: "Energy",
-        description: "Home energy",
-    },
-    {
-        id: "charger",
-        src: "./views/charger.html",
-        type: "url",
-        title: "Charger",
-        description: "EV Charger",
-    },
-    {
-        id: "server",
-        src: "./views/server.html",
-        type: "url",
-        title: "Server",
-        description: "Server performance",
-    },
+    routes: [
+        {
+            id: "energy",
+            src: "./views/energy.html",
+            type: "url",
+            title: "Energy",
+            description: "Home energy",
+        },
+        {
+            id: "charger",
+            src: "./views/charger.html",
+            type: "url",
+            title: "Charger",
+            description: "EV Charger",
+        },
+        {
+            id: "server",
+            src: "./views/server.html",
+            type: "url",
+            title: "Server",
+            description: "Server performance",
+        },
     ],
     routeMenus: [{
         id: "menu1",
         menuType: "horizontal",
         label: "Main Menu",
-    },],
+    }],
 };
 // ---------- End of Menu ---------- //
 
-// ---------- Setup: Start of Routing ---------- //
-const router = new UibRouter(routerConfig);
+// ---------- Setup: Start of Routing ----------
+const router = new UibRouter(routerConfig)
 document.addEventListener("uibrouter:route-changed", function (event) {
     switch (event.detail.newRouteId) {
         case "charger":
-            prepChargerEvents();
-            break;
+            prepChargerEvents()
+            setupChargerSpinButtons()
+            setupChargerSchedule()
+            break
 
         case "energy":
-            prepEnergyEvents();
-            break;
-        // case 'energy': prepEnergyEvents(); break;
-        // case 'server': prepServerEvents(); break;
+            prepEnergyEvents()
+            break
     }
-});
+})
 // ---------- End of Routing ---------- //
 
-// ---------- Setup: Centralised Message Handling for SPA ---------- //
-uibuilder.onChange("msg", handleUibMsg);
+// ---------- Setup: Centralised Message Handling for SPA ----------
+uibuilder.onChange("msg", handleUibMsg)
 
 function handleUibMsg(msg) {
-    if (!msg || typeof msg.payload === "undefined") return;
+    if (!msg || typeof msg.payload === "undefined") return
 
-    const {
-        topic,
-        payload
-    } = msg;
-    console.log("[uibuilder msg]", msg);
+    const { topic, payload } = msg
+    console.log("[uibuilder msg]", msg)
 
     switch (topic) {
-        // Energy boxes
-//        case 'gridpower':
-//            document.getElementById('gridData').textContent = msg.payload
-//            break
-
         case 'gridpower':
             ['gridData', 'gridData2'].forEach(id => {
                 const el = document.getElementById(id)
                 if (el) el.textContent = msg.payload
             })
-            break    
+            break
 
         case 'solar':
-            document.getElementById('solarData').textContent = msg.payload
+            {
+                const el = document.getElementById('solarData')
+                if (el) el.textContent = msg.payload
+            }
             break
 
         case 'usage':
-            document.getElementById('usageData').textContent = msg.payload
+            {
+                const el = document.getElementById('usageData')
+                if (el) el.textContent = msg.payload
+            }
             break
 
         case 'diverted':
-            document.getElementById('divertedData').textContent = msg.payload
+            {
+                const el = document.getElementById('divertedData')
+                if (el) el.textContent = msg.payload
+            }
             break
 
         case 'diverterTemp':
-            document.getElementById('divTempData').textContent = msg.payload
+            {
+                const el = document.getElementById('divTempData')
+                if (el) el.textContent = msg.payload
+            }
             break
 
         case 'voltage':
-            document.getElementById('voltageData').textContent = msg.payload
+            {
+                const el = document.getElementById('voltageData')
+                if (el) el.textContent = msg.payload
+            }
             break
 
         // EV charger
         case "chargeButton":
-            updateChargeButtonUI(payload);
-            break;
+            updateChargeButtonUI(payload)
+            break
 
         case "chargingRate":
-            updateChargingRateUI(payload);
-            break;
+            updateChargingRateUI(payload)
+            break
 
         case "cpuUsage":
-            updateCPUusageUI(payload);
-            break;
+            // payload expected to be numeric percentage
+            updateCPUusageUI(payload)
+            break
 
         case "memoryUsage":
-            updateMemoryUsageUI(payload);
-            break;
+            // payload expected to be numeric percentage
+            updateMemoryUsageUI(payload)
+            break
 
-        case "energyboxes": // To stop unecessary consol msg's
-            break;
-
-        case "chargingState": // To stop unecessary consol msg's
-            break;
+        case "energyboxes":
+        case "chargingState":
+            // intentionally no-op for now
+            break
 
         default:
-            console.warn(`Unhandled topic: ${topic}`, msg);
+            console.warn(`Unhandled topic: ${topic}`, msg)
     }
 }
 // ---------- End of Centralised Message Handling for SPA ---------- //
 
-// ---------- Charger Page ---------- //
+// ---------- Charger Page -----------
 function prepChargerEvents() {
-    const dropdown = document.querySelector(".dropdown");
-    const dropdownBtn = document.getElementById("dropdown-btn");
-    const dropdownContent = document.getElementById("dropdown-content");
+    const dropdown = document.querySelector(".dropdown")
+    const dropdownBtn = document.getElementById("dropdown-btn")
+    const dropdownContent = document.getElementById("dropdown-content")
+
+    if (!dropdown || !dropdownBtn || !dropdownContent) return
 
     document.addEventListener("click", (e) => {
         if (!dropdown.contains(e.target)) {
-            dropdown.classList.remove("show");
+            dropdown.classList.remove("show")
         }
-    });
+    })
 
     window.startCharge = () => {
-        const label = document.querySelector("#start-charge-btn span");
+        const label = document.querySelector("#start-charge-btn span")
         uibuilder.send({
             topic: "chargeButton",
-            payload: label.textContent === "Start Charge" ? true : false,
-        });
-    };
+            payload: label && label.textContent === "Start Charge" ? true : false,
+        })
+    }
 
     window.toggleDropdown = () => {
-        dropdown.classList.toggle("show");
-    };
+        dropdown.classList.toggle("show")
+    }
 
     dropdownContent.querySelectorAll("a").forEach((item) => {
         item.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+            e.preventDefault()
+            e.stopPropagation()
 
-            const rawValue = item.getAttribute("data-value");
-            const value = isNaN(rawValue) ? rawValue : Number(rawValue);
-            const label = item.textContent.trim();
+            const rawValue = item.getAttribute("data-value")
+            const value = isNaN(rawValue) ? rawValue : Number(rawValue)
+            const label = item.textContent.trim()
 
-            // Update button label
-            dropdownBtn.textContent = `Rate: ${label}`;
+            dropdownBtn.textContent = `Rate: ${label}`
+            dropdown.classList.remove("show")
 
-            // Close dropdown
-            dropdown.classList.remove("show");
-
-            // Send to Node-RED
             uibuilder.send({
                 topic: "chargingRate",
                 payload: value,
-            });
-        });
-    });
+            })
+        })
+    })
 }
 
-function updateChargeButtonUI(state) { // *** Charger Button ***
-    const indicator = document.getElementById("start-indicator");
-    const label = document.querySelector("#start-charge-btn span");
+function updateChargeButtonUI(state) {
+    const indicator = document.getElementById("start-indicator")
+    const label = document.querySelector("#start-charge-btn span")
 
     if (indicator) {
         indicator.style.backgroundColor =
-            state === true || state === "on" ? "red" : "green";
+            state === true || state === "on" ? "red" : "green"
     }
 
     if (label) {
         label.textContent =
-            state === true || state === "on" ? "Stop Charge" : "Start Charge";
+            state === true || state === "on" ? "Stop Charge" : "Start Charge"
     }
 }
 
-function updateChargingRateUI(value) { // *** Charger rate dropdown ***
-    const dropdownContent = document.getElementById("dropdown-content");
-    const dropdownBtn = document.getElementById("dropdown-btn");
+function updateChargingRateUI(value) {
+    const dropdownContent = document.getElementById("dropdown-content")
+    const dropdownBtn = document.getElementById("dropdown-btn")
 
-    if (!dropdownContent || !dropdownBtn) return;
+    if (!dropdownContent || !dropdownBtn) return
 
-    const match = dropdownContent.querySelector(`[data-value="${value}"]`);
-    const label = match?.textContent.trim() || value;
+    const match = dropdownContent.querySelector(`[data-value="${value}"]`)
+    const label = match?.textContent.trim() || value
 
-    dropdownBtn.textContent = `Rate: ${label}`;
+    dropdownBtn.textContent = `Rate: ${label}`
+}
+
+// ----- Time dropdowns -----
+// Populate start (0..23) and end (1..24) selects with HH:00 labels
+function populateHourDropdowns() {
+    const startEl = document.getElementById("start-hour")
+    const endEl = document.getElementById("end-hour")
+
+    if (!startEl || !endEl) return
+
+    // Clear any existing options (safe if function called multiple times)
+    startEl.innerHTML = ""
+    endEl.innerHTML = ""
+
+    for (let h = 0; h < 24; h++) {
+        const label = String(h).padStart(2, "0") + ":00"
+        startEl.add(new Option(label, h))
+    }
+
+    // End: 1..24 shown (24:00 shown for UX), but will be normalised before send
+    for (let h = 1; h <= 24; h++) {
+        const displayLabel = h === 24 ? "24:00" : String(h).padStart(2, "0") + ":00"
+        endEl.add(new Option(displayLabel, h))
+    }
+}
+
+// Set sensible defaults: next whole hour for start, start+1 for end, with midnight wrap
+function setDefaultScheduleTimes() {
+    const now = new Date()
+    let startHour = now.getHours()
+    // If we're part-way through the hour, schedule for next hour
+    if (now.getMinutes() > 0) startHour = (startHour + 1) % 24
+
+    let endHour = startHour + 1
+    // endHour domain shown as 1..24 for UX; keep as such here
+    if (endHour > 24) endHour = endHour - 24
+
+    const startEl = document.getElementById("start-hour")
+    const endEl = document.getElementById("end-hour")
+
+    if (startEl) startEl.value = startHour
+    if (endEl) endEl.value = endHour
+}
+
+function setupChargerSpinButtons() {
+    populateHourDropdowns()
+    setDefaultScheduleTimes()
+}
+
+// ----- Schedule buttons -----
+function setupChargerSchedule() {
+    const startEl = document.getElementById("start-hour")
+    const endEl = document.getElementById("end-hour")
+    const setBtn = document.getElementById("set-schedule-btn")
+    const cancelBtn = document.getElementById("cancel-schedule-btn")
+
+    if (!startEl || !endEl || !setBtn || !cancelBtn) return
+
+    setBtn.addEventListener("click", () => {
+        let start = parseInt(startEl.value, 10)
+        let end = parseInt(endEl.value, 10)
+
+        // normalise 24 → 0 (cron-plus / JS Date midnight)
+        if (end === 24) end = 0
+
+        if (!Number.isInteger(start) || !Number.isInteger(end)) {
+            // defensive: don't send invalid values
+            console.warn("Invalid schedule values", startEl.value, endEl.value)
+            return
+        }
+
+        uibuilder.send({
+            topic: "chargerSchedule",
+            payload: { start, end }
+        })
+
+        setBtn.textContent = "Schedule Set ✅"
+        setBtn.classList.add("success")
+        setTimeout(() => {
+            setBtn.textContent = "Set Schedule"
+            setBtn.classList.remove("success")
+        }, 1500)
+    })
+
+    cancelBtn.addEventListener("click", () => {
+        uibuilder.send({
+            topic: "chargerSchedule",
+            payload: { cancel: true }
+        })
+
+        cancelBtn.textContent = "Cancelled ❌"
+        cancelBtn.classList.add("danger-active")
+        setTimeout(() => {
+            cancelBtn.textContent = "Cancel Schedule"
+            cancelBtn.classList.remove("danger-active")
+        }, 1500)
+    })
 }
 // ---------- End of Charger page ---------- //
 
-// ---------- Start of Server page ---------- //
-
-// Track gauges so we only create them once
-let cpuGauge    = null
+// ---------- Server Page ----------
+let cpuGauge = null
 let memoryUsage = null
 
-// ------------ Start CPU usage -------------//
 function updateCPUusageUI(payload) {
     const gaugeElement = document.getElementById('cpu-usage')
-    if (!gaugeElement) return  // gauge container isn't on the page
+    if (!gaugeElement) return
 
     if (!cpuGauge) {
         cpuGauge = new JustGage({
@@ -229,6 +330,17 @@ function updateCPUusageUI(payload) {
             symbol: '%',
             decimals: 1,
             pointer: true,
+            relativeGaugeSize: true,   // enable auto-scaling
+//            height: 300,                // fixed height
+//            width: 300,                 // fixed width
+            gaugeWidthScale: 0.8,
+            title: 'CPU Gauge (%)',
+            label: 'CPU Usage',
+            labelMinFontSize: 12,
+            valueFontSize: 22,
+            valueFontColor: '#a2a2a2',
+            titleFontColor: '#a2a2a2',
+            labelFontColor: '#a2a2a2',
             pointerOptions: {
                 toplength: -20,
                 bottomlength: 15,
@@ -238,10 +350,6 @@ function updateCPUusageUI(payload) {
                 stroke_width: 2,
                 stroke_linecap: 'round'
             },
-            title: 'CPU Gauge (%)',
-            label: 'CPU Usage',
-            labelMinFontSize: 14,
-            valueFontColor: '#a2a2a2',
             targetLine: 20,
             targetLineColor: '#ffffff',
             customSectors: {
@@ -258,10 +366,9 @@ function updateCPUusageUI(payload) {
     }
 }
 
-// ------------ Start Memory usage -------------//
 function updateMemoryUsageUI(payload) {
     const gaugeElement = document.getElementById('memory-usage')
-    if (!gaugeElement) return  // gauge container isn't on the page
+    if (!gaugeElement) return
 
     if (!memoryUsage) {
         memoryUsage = new JustGage({
@@ -272,6 +379,17 @@ function updateMemoryUsageUI(payload) {
             symbol: '%',
             decimals: 1,
             pointer: true,
+            relativeGaugeSize: true,   // disable auto-scaling
+//            height: 300,                // fixed height
+//            width: 300,                 // fixed width
+            gaugeWidthScale: 0.8,
+            title: 'Memory Gauge (%)',
+            label: 'Memory Usage',
+            labelMinFontSize: 12,
+            valueFontSize: 22,
+            valueFontColor: '#a2a2a2',
+            titleFontColor: '#a2a2a2',
+            labelFontColor: '#a2a2a2',
             pointerOptions: {
                 toplength: -20,
                 bottomlength: 15,
@@ -281,10 +399,6 @@ function updateMemoryUsageUI(payload) {
                 stroke_width: 2,
                 stroke_linecap: 'round'
             },
-            title: 'Memory Gauge (%)',
-            label: 'Memory Usage',
-            labelMinFontSize: 14,
-            valueFontColor: '#a2a2a2',
             targetLine: 20,
             targetLineColor: '#ffffff',
             customSectors: {
@@ -301,16 +415,14 @@ function updateMemoryUsageUI(payload) {
     }
 }
 
-// ---------- Start of Plotly chart ---------- //
-//document.addEventListener('DOMContentLoaded', () => {
-//    uibuilder.start();
+
+// ---------- Energy Page ----------
 function prepEnergyEvents() {
-    // Chart data trace
     let chartData = {
         x: [],
         y: [],
         type: 'scatter',
-        mode: 'lines', // could use lines+markers instead
+        mode: 'lines',
         name: 'Grid',
         hovertemplate: '%{y:.0f} W<br>%{x}<extra></extra>',
         line: {
@@ -318,9 +430,8 @@ function prepEnergyEvents() {
             width: 1,
             shape: 'spline',
         },
-    };
+    }
 
-    // Layout configuration
     const plotlyLayout = {
         title: { text: 'Live Grid Power (W)', font: { size: 20 } },
         height: 450,
@@ -333,48 +444,45 @@ function prepEnergyEvents() {
             fixedrange: true,
             title: { text: 'Watts' }
         },
-        paper_bgcolor: '#eeeeee',  // outside the grid #E5E4E2
-        plot_bgcolor: '#eeeeee'    // inside the grid (plot area)
-    };
+        paper_bgcolor: '#eeeeee',
+        plot_bgcolor: '#eeeeee'
+    }
 
-    // Plotly display configuration
     const plotlyConfig = {
-        displayModeBar: false, // Hide floating toolbar
-        responsive: true, // Make the chart responsive
+        displayModeBar: false,
+        responsive: true,
         margin: { t: 0 },
     }
 
-    let chartDrawn = false;
+    let chartDrawn = false
 
-    // Handle messages from Node-RED
     uibuilder.onChange('msg', msg => {
-        if (!msg.payload || !Array.isArray(msg.payload)) return;
+        if (!msg.payload || !Array.isArray(msg.payload)) return
 
-        const incoming = msg.payload[0];
+        const incoming = msg.payload[0]
 
-        // Initial or flush full redraw
         if (incoming.x.length > 1 || msg.topic === "flush") {
-            chartData.x = incoming.x;
-            chartData.y = incoming.y;
+            chartData.x = incoming.x
+            chartData.y = incoming.y
 
-            Plotly.newPlot('chart', [chartData], plotlyLayout, plotlyConfig);
-            chartDrawn = true;
-            return;
+            Plotly.newPlot('chart', [chartData], plotlyLayout, plotlyConfig)
+            chartDrawn = true
+            return
         }
 
-        // Single-point update
         if (incoming.x.length === 1 && incoming.y.length === 1) {
             if (!chartDrawn) {
-                chartData.x = incoming.x;
-                chartData.y = incoming.y;
-                Plotly.newPlot('chart', [chartData], plotlyLayout, plotlyConfig);
-                chartDrawn = true;
+                chartData.x = incoming.x
+                chartData.y = incoming.y
+                Plotly.newPlot('chart', [chartData], plotlyLayout, plotlyConfig)
+                chartDrawn = true
             } else {
                 Plotly.extendTraces('chart', {
                     x: [[incoming.x[0]]],
                     y: [[incoming.y[0]]]
-                }, [0], 360); // keep last 30 mins (120 points)
+                }, [0], 360)
             }
         }
-    });
+    })
 }
+// ---------- End of file ----------

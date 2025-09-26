@@ -3,7 +3,9 @@
  */
 @import url("../uibuilder/uib-brand.min.css");
 
-/* Simple horizontal navigation main menu (in the header) */
+/* ========================= */
+/* Navigation Menu           */
+/* ========================= */
 .nav-main {
     background-color: var(--surface3);
     border-radius: var(--border-radius);
@@ -17,12 +19,10 @@
     display: flex;
 }
 
-/* Add space between menu items */
 .nav-main li {
     margin-right: 1rem;
 }
 
-/* Remove margin on the last item */
 .nav-main li:last-child {
     margin-right: 0;
 }
@@ -36,15 +36,13 @@
     width: 6.15em;
 }
 
-/* Highlight on hover */
 .nav-main a:hover {
     background-color: var(--surface5);
 }
 
-/* end of Navigation bar */
-
-/* Charger CSS */
-/* Standardize height */
+/* ========================= */
+/* Charger CSS               */
+/* ========================= */
 :root {
     --control-height: 3em;
 }
@@ -59,6 +57,7 @@ body>header {
 .status-button {
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: var(--surface4);
     border: 1px solid var(--text3);
     border-radius: var(--border-radius);
@@ -67,9 +66,9 @@ body>header {
     font-family: var(--font-family);
     color: inherit;
     height: var(--control-height);
-    width: fit-content;
     cursor: pointer;
     transition: box-shadow 0.4s, transform 0.2s;
+    width: 100%;
 }
 
 .status-button:active {
@@ -86,17 +85,28 @@ body>header {
     transition: background-color 0.3s;
 }
 
-/* Text box layout */
 body>main {
     padding: var(--spacing-xs);
 }
 
-.wrap-row {
+/* Side-by-side layout for dropdown + start button */
+.control-block {
+    max-width: 300px;
+    width: 100%;
+}
+
+.wrap-row.control-block {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.2em;
-    align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: space-between;
+    gap: 0.5em;
+}
+
+.wrap-row.control-block .dropdown {
+    flex: 3;
+}
+
+.wrap-row.control-block .status-button {
+    flex: 2;
 }
 
 /* Dropdown styling */
@@ -104,6 +114,7 @@ body>main {
     position: relative;
     display: inline-block;
     font-family: var(--font-family);
+    width: 100%;
 }
 
 .dropbtn {
@@ -115,10 +126,11 @@ body>main {
     cursor: pointer;
     border-radius: var(--border-radius);
     height: var(--control-height);
-    width: 12em;
+    width: 100%;
     display: flex;
     align-items: center;
     transition: background-color 0.2s ease;
+    justify-content: center;
 }
 
 .dropbtn:hover {
@@ -151,7 +163,7 @@ body>main {
     display: block;
 }
 
-/* charger Status text*/
+/* Charger Status text */
 .status-text {
     color: var(--text-color, inherit);
     font-size: var(--font-size-base);
@@ -165,8 +177,181 @@ body>main {
     margin-bottom: 0.5em;
 }
 
+/* ========================= */
+/* Charger Schedule Section  */
+/* ========================= */
+.charger-schedule {
+    max-width: 300px;
+    width: 100%;
+    padding: 0.8em;
+    margin-top: 1em;
+    background-color: var(--surface3);
+    border: 1px solid var(--surface5);
+    border-radius: var(--radius-s, 0.5em);
+    box-shadow: var(--shadow-sm);
+}
 
-/* start of justgage gauges */
+.charger-schedule h3 {
+    margin-top: 0;
+    margin-bottom: 0.6em;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* Time row layout (labels, inputs, selects, buttons) */
+.time-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5em;
+    margin-bottom: 0.8em;
+    flex-wrap: wrap;
+}
+
+.time-row label {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-right: 8px;
+}
+
+.time-row input,
+.time-row select {
+    height: var(--control-height);
+    font-size: 16px;
+    padding: 0.3em 0.6em;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--text3);
+    margin-top: 0.3em;
+    background-color: var(--surface1);
+    color: var(--text1);
+    cursor: pointer;
+}
+
+.time-row button {
+    font-size: 16px;
+    padding: 6px 14px;
+    border-radius: var(--border-radius);
+}
+
+/* Buttons */
+#set-schedule-btn {
+    width: 100%;
+    height: var(--control-height);
+    background: linear-gradient(to bottom, var(--surface5), var(--surface4));
+    border: 1px solid var(--text3);
+    border-radius: var(--radius-s, 0.5em);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#set-schedule-btn:hover {
+    background-color: var(--surface5);
+}
+
+#cancel-schedule-btn {
+    width: 100%;
+    height: var(--control-height);
+    margin-top: 0.5em;
+    background: linear-gradient(to bottom, #f66, #d44);
+    border: 1px solid #a22;
+    border-radius: var(--radius-s, 0.5em);
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s;
+}
+
+#cancel-schedule-btn:hover {
+    background-color: #c33;
+}
+
+#cancel-schedule-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#set-schedule-btn.success {
+    background: linear-gradient(to bottom, #4caf50, #388e3c);
+    border-color: #2e7d32;
+}
+
+#cancel-schedule-btn.danger-active {
+    background: linear-gradient(to bottom, #ff5c5c, #d32f2f);
+    border-color: #b71c1c;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    .time-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .time-row label {
+        margin-right: 0;
+        margin-bottom: 4px;
+    }
+
+    .time-row input,
+    .time-row select,
+    .time-row button {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+/* ========================= */
+/* Energy data boxes         */
+/* ========================= */
+.wrap-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2em;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.wrap-row article {
+    flex: 1 0 120px;
+    max-width: 162px;
+    padding: var(--spacing-xs);
+    margin: 0;
+    background-color: var(--surface4);
+    color: var(--text-color);
+    border: 1px solid var(--border-color, #999);
+    border-radius: var(--radius-s, 0.5em);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    font-size: var(--font-size-base);
+}
+
+/* ========================= */
+/* Plotly chart              */
+/* ========================= */
+#plotly-chart {
+    width: 100%;
+    height: 45vh;
+    margin-top: 1em;
+}
+
+.js-plotly-plot .plotly .main-svg {
+    margin: 1em 0 0 0;
+    background-color: unset;
+}
+
+.js-plotly-plot .plotly .modebar-btn svg {
+    background-color: unset;
+    margin: unset;
+}
+
+/* ========================= */
+/* Server                    */
+/* ========================= */
 .gauge {
     width: 325px;
     height: 180px;
@@ -178,60 +363,12 @@ body>main {
     /* Remove margin around gauge */
 }
 
-/* Start of energy data boxes */
-.wrap-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.2em;
-    /* your desired spacing between boxes */
-    align-items: flex-start;
-    justify-content: flex-start;
-}
-
-    /* Style each data box */
-.wrap-row article {
-    flex: 1 0 120px;
-    /* responsive with a min width */
-    max-width: 162px;
-    /* prevent growing too wide */
-    padding: var(--spacing-xs);
-    margin: 0;
-    /* gaps are now controlled via flex gap */
-    background-color: var(--surface4);
-    color: var(--text-color);
-    /* ensures good contrast */
-    border: 1px solid var(--border-color, #999);
-    /* fallback if var isn't defined */
-    border-radius: var(--radius-s, 0.5em);
-    box-shadow: var(--shadow-sm);
-    /* gives "card" feel */
-    text-align: center;
-    font-size: var(--font-size-base);
-}
-
-/* end of energy data boxes */
-
-/* Start of Plotly */
-#plotly-chart {
-    /* HAVE to set at least width and height for Plotly to render */
-    width: 100%;
-    height: 45vh;
-    margin-top: 1em;
-}
-
-/* Overrides for UIUILDER's default styles */
-.js-plotly-plot .plotly .main-svg {
-    margin: 1em 0 0 0;
-    background-color: unset;
-}
-
-.js-plotly-plot .plotly .modebar-btn svg {
-    background-color: unset;
-    margin: unset;
-}
-
-/* Start of Common featues */
+/* ========================= */
+/* Common features           */
+/* ========================= */
 .datavalue {
     font-weight: 700;
 }
-/* End of Common featues */
+
+
+/* Test area           */
