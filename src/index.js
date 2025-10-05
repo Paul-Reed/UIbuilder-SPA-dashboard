@@ -8,10 +8,11 @@ if ('serviceWorker' in navigator) {
 }
 // ---------- End of PWA ---------- //
 
-// ---------- Setup: Menu ----------
+// ---------- Setup: Menu & Routing ----------
 const routerConfig = {
-    defaultRoute: "energy",
-    hide: true,
+    defaultRoute: "energy",   // Which page to load first
+    hide: false,             // If true, router won't auto-generate menu
+    routeContainer: "#view-container",
     routes: [
         {
             id: "energy",
@@ -35,13 +36,15 @@ const routerConfig = {
             description: "Server performance",
         },
     ],
-    routeMenus: [{
-        id: "menu1",
-        menuType: "horizontal",
-        label: "Main Menu",
-    }],
-};
-// ---------- End of Menu ---------- //
+    routeMenus: [
+        {
+            id: "menu1",
+            menuType: "horizontal",
+            label: "Main Menu",
+            mountPoint: "#menu1",   // 👈 Tells UibRouter to mount menu here
+        },
+    ],
+}
 
 // ---------- Setup: Start of Routing ----------
 const router = new UibRouter(routerConfig)
@@ -331,8 +334,6 @@ function updateCPUusageUI(payload) {
             decimals: 1,
             pointer: true,
             relativeGaugeSize: true,   // enable auto-scaling
-//            height: 300,                // fixed height
-//            width: 300,                 // fixed width
             gaugeWidthScale: 0.8,
             title: 'CPU Gauge (%)',
             label: 'CPU Usage',
@@ -379,9 +380,6 @@ function updateMemoryUsageUI(payload) {
             symbol: '%',
             decimals: 1,
             pointer: true,
-            relativeGaugeSize: true,   // disable auto-scaling
-//            height: 300,                // fixed height
-//            width: 300,                 // fixed width
             gaugeWidthScale: 0.8,
             title: 'Memory Gauge (%)',
             label: 'Memory Usage',

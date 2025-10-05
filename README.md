@@ -3,7 +3,7 @@
 # Restoring this template into UIbuilder
 
 * Drop a new 'UIbuilder' node into the editor, and name it's url as 'home' or whatever name you wish, and deply.
-* From the node config, in 'Template Settings' select 'Load an external template using Degit' from the dropdown, and enter the got url. In this case use `Paul-Reed/UIbuilder-SPA-dashboard` and deploy.
+* From the node config, in 'Template Settings' select 'Load an external template using Degit' from the dropdown, and enter the git url. In this case use `Paul-Reed/UIbuilder-SPA-dashboard` and deploy.
 * UIbuilder will then over-write the contents of the 'new' UIbuilder node with the git template.
 
 > **Note**: if it's also necessary to import the UIbuilder flow from a backup, do that first, **then** restore the template. 

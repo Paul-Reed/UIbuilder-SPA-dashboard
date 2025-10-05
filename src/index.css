@@ -6,38 +6,23 @@
 /* ========================= */
 /* Navigation Menu           */
 /* ========================= */
-.nav-main {
-    background-color: var(--surface3);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--text3);
-}
-
-.nav-main ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+.uib-route-menu.horizontal {
     display: flex;
-}
-
-.nav-main li {
-    margin-right: 1rem;
-}
-
-.nav-main li:last-child {
-    margin-right: 0;
-}
-
-.nav-main a {
-    text-decoration: none;
-    padding: var(--border-pad);
+    gap: 1rem;
+    background: var(--surface3);
+    padding: 0.5rem 1rem;
     border-radius: var(--border-radius);
-    text-align: center;
-    display: block;
-    width: 6.15em;
 }
 
-.nav-main a:hover {
-    background-color: var(--surface5);
+.uib-route-menu a {
+    text-decoration: none;
+    color: var(--text1);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+}
+
+.uib-route-menu a.active {
+    background: var(--surface5);
 }
 
 /* ========================= */
